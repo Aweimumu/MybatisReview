@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper文件相当于DAO接口的‘实现类’，namespace属性要指定`实现`DAO接口的全限定名-->
+<mapper namespace="org.example.dao.UserDAO">
+
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into users(user_id,user_name,user_pwd,user_realname,user_img)  values (#{userId},#{userName},#{userPwd},#{userRealname},#{userImg})
+    </insert>
+    <resultMap id="userMap" type="org.example.domain.User">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_pwd" property="userPwd"/>
+        <result column="user_realname" property="userRealname"/>
+        <result column="user_img" property="userImg"/>
+        <association property="detail" select="org.example.dao.DetailDAO.queryDetail" column="user_id"/>
+    </resultMap>
+    <select id="queryUser" resultMap="userMap">
+    select user_id,user_name,user_pwd,user_realname,user_img from users  where user_name=#{userName}
+    </select>
+</mapper>

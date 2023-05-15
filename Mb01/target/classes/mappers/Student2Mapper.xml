@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper文件相当于DAO接口的‘实现类’，namespace属性要指定`实现`DAO接口的全限定名-->
+<mapper namespace="org.example.dao.Student2DAO">
+<resultMap id="baseMap" type="org.example.domain.Student2">
+    <id column="sid" property="stuId"/>
+    <result column="sname" property="stuName"/>
+    <result column="sage"  property="stuAge"/>
+    <result column="scid" property="stuCid"/>
+</resultMap>
+<select id="queryStudents" resultMap="baseMap">
+    select sid,sname,sage,scid from students where scid=#{cid}
+</select>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper文件相当于DAO接口的‘实现类’，namespace属性要指定`实现`DAO接口的全限定名-->
+<mapper namespace="org.example.dao.MemberDAO">
+    <resultMap id="memberMap" type="org.example.domain.Member">
+        <id column="member_id" property="memberId"/>
+        <result column="member_nick" property="memberNick"/>
+        <result column="member_gender" property="memberGender"/>
+        <result column="member_age" property="memberAge"/>
+        <result column="member_city" property="memberCity"/>
+    </resultMap>
+    <cache/>
+    <insert id="insertMember">
+insert  into members(member_id,member_nick,member_gender,member_age,member_city)
+<trim prefix="values(" suffixOverrides="," suffix=")">
+    <if test="memberId !=null">
+        #{memberId},
+    </if>
+    <if test="memberNick !=null">
+        #{memberNick},
+    </if>
+    <if test="memberGender !=null">
+        #{memberGender},
+    </if>
+    <if test="memberAge !=null">
+        #{memberAge},
+    </if>
+    <if test="memberCity !=null">
+        #{memberCity}
+    </if>
+</trim>
+
+
+
+    </insert>
+    <update id="updateMember">
+update members
+<set>
+<if test="memberNick !=null">
+    member_nick=#{memberNick},
+</if>
+    <if test="memberGender !=null">
+        member_gender=#{memberGender},
+    </if>
+    <if test="memberAge !=null">
+        member_age=#{memberAge},
+    </if>
+    <if test="memberCity !=null">
+        member_city=#{memberCity}
+    </if>
+ </set>
+where member_id=#{memberId}
+    </update>
+
+    <select id="searchMember" resultMap="memberMap">
+        select member_id,member_nick,member_gender,member_age,member_city
+        from members
+<where>
+<if test="gender!=null">
+  and member_gender=#{gender}
+</if>
+<if test="minAge !=null">
+    and member_age &gt;=#{minAge}
+</if>
+<if test="maxAge !=null">
+    and member_age   &lt; =  #{minAge}
+</if>
+<if test="city!=null">
+     and member_city=#{city}
+</if>
+</where>
+order by member_age
+    </select>
+    <select id="searchMemberByNick" resultMap="memberMap">
+        select * from members where member_nick like '%${keyWord}%'
+    </select>
+    <select id="queryMemberById" resultMap="memberMap" useCache="false">
+        select * from members where member_id=#{id}
+    </select>
+</mapper>

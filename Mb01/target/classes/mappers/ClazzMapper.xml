@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper文件相当于DAO接口的‘实现类’，namespace属性要指定`实现`DAO接口的全限定名-->
+<mapper namespace="org.example.dao.ClazzDAO">
+    <resultMap id="ClazzMapper" type="org.example.domain.Clazz">
+        <id column="cid" property="classId"/>
+        <result column="cname" property="className"/>
+        <result column="cdesc" property="classDesc"/>
+        <collection property="stus" select="org.example.dao.Student2DAO.queryStudents" column="cid" fetchType="lazy"/>
+    </resultMap>
+    <select id="queryClazz" resultMap="ClazzMapper" >
+    select cid,cname,cdesc from classes where cid=#{cid}
+    </select>
+</mapper>

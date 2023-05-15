@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="jdbc.properties"></properties>
+<!--    <settings>-->
+<!--        <setting name="cachedEnabled" value="true"/>-->
+<!--        <setting name="lazyLoadingEnable" value="true"/>-->
+<!--    启动延迟加载和二级缓存-->
+<!--    </settings>-->
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+    </settings>
+    <typeAliases>
+        <typeAlias type="org.example.domain.Student"  alias="Student"/>
+<!--    给实体类去别名-->
+    </typeAliases>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="org.example.domain.DruidDataSourceFactory">
+                <property name="driverClass" value="${mysql_driver}"/>
+                <property name="url" value="${mysql_url}"/>
+                <property name="username" value="${mysql_username}"/>
+                <property name="password" value="${mysql_password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mappers/StudentMapper.xml"/>
+        <mapper resource="mappers/DetailMapper.xml"/>
+        <mapper resource="mappers/UserMapper.xml"/>
+        <mapper resource="mappers/Student2Mapper.xml"/>
+        <mapper resource="mappers/ClazzMapper.xml"/>
+        <mapper resource="mappers/MemberMapper.xml"/>
+    </mappers>
+</configuration>
